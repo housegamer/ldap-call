@@ -7,21 +7,21 @@ from ldap3.utils.log import set_library_log_detail_level, get_detail_level_name,
 from ldap3 import Server, Connection, ALL, Tls, NTLM, SUBTREE
 
 
-username = input('Please put expedia username: ')
-password = getpass.getpass('Please put prod password: ')
+username = input('LDAP username: ')
+password = getpass.getpass('LDAP password: ')
 
 def logs():
     timestr = time.strftime('%m-%d-%Y:%H-%M-%S')
-    path = f'/Users/rodcastillo/Documents/LdapLogs/log-{timestr}.log' # Use your personal/server path
+    path = f'/<your-local-path>-{timestr}.log' 
     set_library_log_detail_level(BASIC)
     return path
 
 def conn():
     tls_configuration = Tls(validate=ssl.CERT_REQUIRED,version=ssl.PROTOCOL_TLSv1)
     logging.basicConfig(filename=f'{logs()}', level=logging.DEBUG)
-    server = Server("ldaps://lbdc.sea.corp.expecn.com:636", use_ssl=True, get_info=ldap3.ALL) # Use your own LDAP connections
+    server = Server("ldaps://<ldap-connection>", use_ssl=True, get_info=ldap3.ALL)
     conn = Connection(server,
-                     user=f'expediagroup.com\\{username}',  
+                     user=f'<ldap-dns>.com\\{username}',  
                      password=f'{password}', 
                      authentication=NTLM,
                      auto_bind=True,
